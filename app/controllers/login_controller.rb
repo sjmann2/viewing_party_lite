@@ -12,7 +12,7 @@ class LoginController < ApplicationController
       redirect_to user_path(user)
     else
       flash[:alert] = "Incorrect password, please try again"
-      redirect_to login_path
+      render :index
     end
   end
 end

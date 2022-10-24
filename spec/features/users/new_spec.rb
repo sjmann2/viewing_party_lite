@@ -81,6 +81,6 @@ RSpec.describe 'the new user page' do
     click_button 'Register'
 
     expect(current_path).to eq(register_path)
-    expect(page).to have_content('Error: Passwords do not match')
+    expect(page).to have_content("Error: Password confirmation doesn't match Password")
   end
 end
