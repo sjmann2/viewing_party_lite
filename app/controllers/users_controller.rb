@@ -3,8 +3,6 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
-    # @hosted_parties = @user.hosted_parties
-    # @invited_parties = @user.invited_parties
     @image_url_hash = MoviesFacade.images(@user.movie_ids)
   end
 
@@ -13,17 +11,22 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-
-    if user.save
-      redirect_to user_path(user.id)
+    if params[:user][:password] == params[:user][:password_confirmation]
+      user = User.new(user_params)
+      if user.save
+        redirect_to user_path(user.id)
+        flash[:alert] = "Welcome #{user.username}!"
+      else
+        redirect_to register_path
+        flash[:alert] = "Error: #{error_message(user.errors)}"
+      end
     else
       redirect_to register_path
-      flash[:alert] = "Error: #{error_message(user.errors)}"
+      flash[:alert] = "Error: Passwords do not match"
     end
   end
 
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:username, :password, :email)
   end
 end
