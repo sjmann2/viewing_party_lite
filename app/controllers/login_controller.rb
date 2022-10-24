@@ -8,11 +8,11 @@ class LoginController < ApplicationController
     user = User.find_by(username: params[:username])
     if user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to user_path(user)
       flash[:alert] = "Welcome back, #{user.username}!"
+      redirect_to user_path(user)
     else
       flash[:alert] = "Incorrect password, please try again"
-      render :index
+      redirect_to login_path
     end
   end
 end
